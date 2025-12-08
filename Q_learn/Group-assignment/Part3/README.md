@@ -2,72 +2,88 @@
 
 ## Project Overview
 
-This repository contains **Part 3** of the OOP Final Project. It implements a custom, two-agent **Warehouse Environment** based on the principles of Reinforcement Learning (RL).
+This repository contains Part 3 of the OOP Final Project. It implements a custom, two-agent Warehouse Environment based on Reinforcement Learning (RL).
+The environment is built using the Gymnasium library’s `Env` class, providing a standardized interface for RL training.
 
-The environment is built using the **Gymnasium** (formerly Gym) library's `Env` class, providing a standardized interface for RL training.
-
-The project uses the **Proximal Policy Optimization (PPO)** algorithm from the **Stable Baselines3** library to train an RL model capable of controlling the agents.
+The project uses the Proximal Policy Optimization (PPO) algorithm from the Stable-Baselines3 library to train an RL model capable of controlling two agents simultaneously.
 
 ### Goal of the Environment
 
-The primary objective of the two agents within the warehouse environment is to successfully **deliver 4 packages** from their spawning locations to the designated **offloading area**.
+The primary objective of the environment is for two agents to cooperatively deliver four packages from their spawning locations to a designated offloading area.
+
+---
 
 ## Dependencies
 
-The following packages are required to run the environment and utilize the trained model:
+The following packages are required:
 
-* `gymnasium` (The core environment interface)
-* `numpy` (Numerical operations)
-* `random` (For environment dynamics)
-* `os` (Operating system interaction for rendering)
-* `stable_baselines3` (RL algorithms and model loading)
-* `pygame` (For visual rendering of the environment)
+- gymnasium
+- numpy
+- random
+- os
+- stable-baselines3
+- pygame
 
-You can typically install these using `pip`:
+Install using:
 
+    pip install gymnasium numpy stable-baselines3 pygame
 
-pip install gymnasium numpy stable-baselines3 pygame
+---
 
+## How to Run the Trained Model
 
-How to Run the Trained Model
-Follow these steps to load the pre-trained PPO model and visualize the two agents' performance in the custom WareHouseEnv.
-1. run the imports at the top  
-2. Load the Model
-Initialize and load the trained PPO model. NOTE: You must ensure the file path is correct for your system.
-model = PPO.load(r"C:\Users\Brian\Downloads\warehouse\Q_learn\Training\Saved Models\WareHouse_Model_multi_ver3_PPO.zip", env=env)
-3.Initialize the Environment and Pygame
-Create an instance of the custom environment and set up the Pygame rendering window:
-env = WareHouseEnv()
-env.init_pygame()
-4.Run the Simulation Loop
-Execute the following script to run 5 episodes, visualize the agents' actions, and print the resulting score:
+Follow the steps below to load the pre-trained PPO model and visualize the agents in the custom `WareHouseEnv`.
 
-import time
-import os
+### 1. Run the imports and classes and helper functions
 
-episodes = 5
-for episode in range(1, episodes + 1):
-    obs, info = env.reset()
-    done = False
-    score = 0
+Ensure you have all necessary imports and the `WareHouseEnv`, `Agent`,  `package` and its subclasses, `ExpressPackage` and `HeavyPackage`, as well as the helper function `manhatton` defined in your script.
 
-    while not done:
-        # Clear console (optional, makes the render look like animation)
-        os.system("cls" if os.name == "nt" else "clear")
+### 2. Load the PPO Model
 
-        env.render()       # <-- Render the current state
+Update the file path as needed for your system:
 
-        action, _ = model.predict(obs, deterministic=True)
-        obs, reward, terminated, truncated, info = env.step(action)
+    model = PPO.load(
+        r"C:\Users\Brian\Downloads\warehouse\Q_learn\Training\Saved Models\WareHouse_Model_multi_ver3_PPO.zip",
+        env=env
+    )
 
-        done = terminated or truncated
-        score += reward
+### 3. Initialize the Environment and Pygame
 
-        time.sleep(0.05)   # Slow down for visibility (adjust as needed)
+    env = WareHouseEnv()
+    env.init_pygame()
 
-    print(f"Episode {episode} Score {score}")
+### 4. Run the Simulation Loop
 
-env.close()
+The following script runs five episodes, renders the environment, and prints episode scores:
+
+    import time
+    import os
+
+    episodes = 5
+    for episode in range(1, episodes + 1):
+        obs, info = env.reset()
+        done = False
+        score = 0
+
+        while not done:
+            # Clear console for animation effect
+            os.system("cls" if os.name == "nt" else "clear")
+
+            env.render()  # Render current environment state
+
+            action, _ = model.predict(obs, deterministic=True)
+            obs, reward, terminated, truncated, info = env.step(action)
+
+            done = terminated or truncated
+            score += reward
+
+            time.sleep(0.05)  # Slow rendering speed for visibility
+
+        print(f"Episode {episode} Score {score}")
+
+    env.close()
+
+---
 
 
 contribution:

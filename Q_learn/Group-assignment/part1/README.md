@@ -22,7 +22,7 @@ Install using:
 ---
 
 ## How to Run 
-  python mountain_car.py
+      python mountain_car.py
 
 contribution:
 B124020028

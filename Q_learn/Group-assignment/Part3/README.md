@@ -43,7 +43,7 @@ Ensure you have all necessary imports and the `WareHouseEnv`, `Agent`,  `package
 Update the file path as needed for your system:
 
     model = PPO.load(
-        r"C:\Users\Brian\Downloads\warehouse\Q_learn\Training\Saved Models\WareHouse_Model_multi_ver3_PPO.zip",
+        r"C:\Users\Brian\Downloads\warehouse\Q_learn\Training\Saved Models\WareHouse_Model_multi_ver4_PPO.zip",
         env=env
     )
 

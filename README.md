@@ -1,3 +1,3 @@
 # oop-finalproject-team27
-final project for the OOP course
+Final project for the OOP course
 

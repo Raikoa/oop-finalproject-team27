@@ -23,17 +23,12 @@ def run(episodes, is_training=True, render=False):
         q = pickle.load(f)
         f.close()
 
-
-    epsilon = 1         # 1 = 100% random actions
-
-    learning_rate_a = 0.2 # alpha or learning rate
-    discount_factor_g = 0.974229
-    min_exploration_rate = 0.023330     #最小探索率
-    epsilon_decay_rate = 0.000369 # 探索率衰減速度
-    
-
-    
-
+    learning_rate_a = 0.12               # alpha or learning rate
+    min_learning_rate = 0.00007              # 最小學習率
+    discount_factor_g = 0.978               # gamma or discount rate. Near 0: more weight/reward placed on immediate state. Near 1: more on future state.
+    learning_rate_decay = 0.000007            # 學習率衰減率
+    epsilon_decay_rate = 0.0000785            
+    epsilon = 1   
     rng = np.random.default_rng()   # random number generator
 
     rewards_per_episode = np.zeros(episodes)
@@ -58,7 +53,8 @@ def run(episodes, is_training=True, render=False):
 
             state = new_state
 
-        epsilon = max(epsilon - epsilon_decay_rate, min_exploration_rate)
+        epsilon = max(epsilon - epsilon_decay_rate, 0)
+        learning_rate_a = max(learning_rate_a - learning_rate_decay, min_learning_rate)
 
         if(epsilon==0):
             learning_rate_a = 0.0001
@@ -83,14 +79,6 @@ def run(episodes, is_training=True, render=False):
         f.close()
 
 if __name__ == '__main__':
-    # Step 1: 訓練
-    print("Training...")
     run(15000, is_training=True, render=False)
-    
-    # # Step 2: 評估
-    print("\nEvaluating...")
+
     run(1000, is_training=False, render=False)
-    
-    # # Step 3: 視覺化展示（可選）
-    # print("\nDemo (10 episodes with rendering)...")
-    # run(10, is_training=False, render=True)

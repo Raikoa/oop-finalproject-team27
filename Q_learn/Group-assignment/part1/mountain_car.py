@@ -5,6 +5,7 @@ import gymnasium as gym
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
+import os
 
 def run(episodes, is_training=True, render=False):
     if is_training:
@@ -21,7 +22,9 @@ def run(episodes, is_training=True, render=False):
     if(is_training):
         q = np.zeros((len(pos_space), len(vel_space), env.action_space.n)) # init a 20x20x3 array
     else:
-        f = open('mountain_car.pkl', 'rb')
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_dir, 'mountain_car.pkl')
+        f = open(file_path, 'rb')
         q = pickle.load(f)
         f.close()
 
@@ -74,7 +77,9 @@ def run(episodes, is_training=True, render=False):
 
     # Save Q table to file
     if is_training:
-        f = open('mountain_car.pkl','wb')
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_dir, 'mountain_car.pkl')
+        f = open(file_path,'wb')
         pickle.dump(q, f)
         f.close()
 
@@ -82,7 +87,9 @@ def run(episodes, is_training=True, render=False):
     for t in range(episodes):
         mean_rewards[t] = np.mean(rewards_per_episode[max(0, t-100):(t+1)])
     plt.plot(mean_rewards)
-    plt.savefig(f'mountain_car.png')
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, 'mountain_car.png')
+    plt.savefig(file_path)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Car Agent Runner")

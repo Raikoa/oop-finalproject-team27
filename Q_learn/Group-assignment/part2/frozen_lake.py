@@ -56,8 +56,8 @@ def run(episodes, is_training=True, render=False):
         epsilon = max(epsilon - epsilon_decay_rate, 0)
         learning_rate_a = max(learning_rate_a - learning_rate_decay, min_learning_rate)
 
-        if(epsilon==0):
-            learning_rate_a = 0.0001
+        # if(epsilon==0):
+        #     learning_rate_a = 0.0001
 
         if reward == 1:
             rewards_per_episode[i] = 1
